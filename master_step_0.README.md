@@ -22,7 +22,7 @@ Create an instance (VM) with Ubuntu Server 24.04 LTS as the starting point. [htt
 
 Download the Ubuntu Server 24.04 LTS Live Server ISO image from the internet and upload it to Truenas as a Volume. When creating a new instance, choose this uploaded volume.
  
-### Create the VM
+### Create the VM (i.e. instance)
 - 2 CPU
 - 8 GiB RAM
 - 10 GiB Root Disk
@@ -38,16 +38,16 @@ From the VNC window:
   - Choose the OpenSSH option at the end and import your public ssh key from github.com
 - Complete the OS installation and reboot
 - After reboot:
-  - first stop the running instance from Truenas
-  - Delete the Ubuntu Server 24.04 LTS volume _from this VM only_
+  - Stop the running instance from Truenas
+  - Delete the Ubuntu Server 24.04 LTS **disk** _from this instance only_ ![](assets/delete_disk.png)
   - Unselect Autostart
   - Start the instance and take note of which IP address it has started up at (either by logging in from VNC and running ```ip a``` or from your router)
-- SSH into the machine using that IP address
+  - SSH into the machine using that IP address
 
 ### Checks
 On logging in to the machine, verify a few things:
 
-1. Verify that swap space is off
+1. swap space is off
 ```
 nikhil@k8smaster:~$ free -m
                total        used        free      shared  buff/cache   available
@@ -61,7 +61,7 @@ nikhil@k8smaster:~$ sysctl net.ipv4.ip_forward
 net.ipv4.ip_forward = 0
 ```
 
-3. Verify the cgroup driver used on the system is `cgroup2fs`
+3. The cgroup driver used on the system is `cgroup2fs`
 ```
 nikhil@k8smaster:~$ stat -fc %T /sys/fs/cgroup/
 cgroup2fs

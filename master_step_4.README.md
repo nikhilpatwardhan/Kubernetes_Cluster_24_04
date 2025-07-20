@@ -65,7 +65,7 @@ To fix this
 kubectl apply -f https://github.com/antrea-io/antrea/releases/download/v2.4.0/antrea.yml
 ```
 
-After this the ssh session closes and cannot be re-established. SSH is removed from the firewall rules, but that's ok because we can still connect to the machine from VNC where it shows that the master node is now Ready. You can then add back the ssh rule.
+After this the ssh session closes and cannot be re-established. SSH is removed from the firewall rules, but that's ok because we can still connect to the machine from VNC where it shows that the master node is now `Ready`. You can then add back the ssh rule.
 
 ```
 sudo ufw allow from 10.12.1.0/24 to any port 22
