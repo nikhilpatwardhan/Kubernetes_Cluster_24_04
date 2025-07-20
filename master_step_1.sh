@@ -8,7 +8,7 @@ fi
 # These instructions are to create the master node on a virtual machine in Truenas Scale (Fangtooth)
 
 # Steps to be performed before running this script:
-# Create a ZVol of size 12 GiB that will act as the disk on which we will install Ubuntu Server 24.04
+# Create a ZVol of size 10 GiB that will act as the disk on which we will install Ubuntu Server 24.04
 # Download the ISO image from the internet and upload it to Truenas
  
 # Create a new instance with these parameters through the GUI
@@ -16,7 +16,7 @@ fi
 # 2 CPU
 # 8 GiB RAM
 # 6 GiB Root Disk
-# 12 GiB Imported ZVol called d1
+# Attached ZVol onto which the OS will be installed
 # Select the appropriate NIC
 # Setup a VNC port of 5901 (so that it does not clash with 5900 already in use)
 # 
