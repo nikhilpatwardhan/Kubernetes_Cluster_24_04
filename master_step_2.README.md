@@ -1,5 +1,9 @@
 Execute these steps manually
 
+```
+sudo vim /etc/containerd/config.toml
+```
+
 Open the default config file /etc/containerd/config.toml as sudo in vim and then add the SystemdCgroup option into this section
 ```
 [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.runc]
@@ -8,11 +12,15 @@ Open the default config file /etc/containerd/config.toml as sudo in vim and then
     SystemdCgroup = true
 ```
 
-```
-sudo vim /etc/containerd/config.toml
-```
-
 Then run
 ```
 sudo systemctl restart containerd
+```
+
+### Next Step
+To run the ```master_step_1.sh``` file after SSH'ing in:
+```
+wget https://raw.githubusercontent.com/nikhilpatwardhan/Kubernetes_Cluster_24_04/refs/heads/main/master_step_3.sh
+chmod +x master_step_3.sh
+sudo ./master_step_3.sh
 ```

@@ -65,8 +65,14 @@ To fix this
 kubectl apply -f https://github.com/antrea-io/antrea/releases/download/v2.4.0/antrea.yml
 ```
 
-After this the ssh session closes and cannot be re-established. SSH is removed from the firewall rules, but that's ok because we can still connect to the machine from VNC where it shows that the master node is now `Ready`. You can then add back the ssh rule.
+### Next Step
+After this within seconds, the ssh session automatically closes and cannot be re-established because port 22 is not exposed anymore. But that's ok because we can still connect to the machine from VNC where it shows that the master node is now `Ready` on running `kubectl get nodes` again. You can then add back the ssh rule and continue to SSH into the machine.
 
 ```
 sudo ufw allow from 10.12.1.0/24 to any port 22
+sudo ufw --force enable
 ```
+
+To shut down the machine run, but remember that on reboot kubernetes will not be on. See ![reboot instructions](./master_step_reboot.README.md)
+
+```sudo shutdown now```

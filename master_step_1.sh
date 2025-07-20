@@ -25,7 +25,7 @@ sudo ufw allow from 10.12.1.0/24 to any port 10259
 sudo ufw allow from 10.12.1.0/24 to any port 10257
 sudo ufw allow from 10.12.1.0/24 to any port 2379
 sudo ufw allow from 10.12.1.0/24 to any port 2380
-sudo ufw enable
+sudo ufw --force enable
 sudo ufw status verbose
 
 IP_FWD_FILE="/etc/sysctl.d/k8s.conf"
