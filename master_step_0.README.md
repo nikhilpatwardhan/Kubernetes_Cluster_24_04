@@ -67,6 +67,13 @@ nikhil@k8smaster:~$ stat -fc %T /sys/fs/cgroup/
 cgroup2fs
 ```
 
+### Upgrade
+On the fresh system, run the below two commands and then reboot. These can be run from VNC or SSH.
+```
+sudo apt update && sudo apt upgrade -y
+sudo reboot now
+```
+
 ### Assinging a static IP
 ```ip a``` will also show you the MAC address, which you can then use to setup a DHCP reservation in the router to assign a static IP address e.g. 10.12.1.12 to this MAC address. Restart both the router and the VM to take effect. Verify by running ```ip a``` again.
 

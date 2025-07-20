@@ -5,8 +5,6 @@ if [[ "$EUID" -ne 0 ]] ; then
   exit 1
 fi
 
-sudo apt update
-sudo apt upgrade -y
 sudo apt install openssh-server net-tools vim ufw -y
 sudo apt install libseccomp2 libseccomp-dev -y
 sudo apt-get install -y apt-transport-https ca-certificates curl gpg
