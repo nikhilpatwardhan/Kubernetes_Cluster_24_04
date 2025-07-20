@@ -16,25 +16,27 @@ sudo apt update
 sudo apt install openssh-server net-tools vim ufw -y
 sudo apt install libseccomp2 libseccomp-dev -y
 sudo apt-get install -y apt-transport-https ca-certificates curl gpg
-sudo apt install systemd-timesyncd
+sudo apt install -y systemd-timesyncd
 sudo timedatectl set-ntp true
 sudo timedatectl status
-sudo systemctl enable —now ssh
+sudo systemctl enable --now ssh
 sudo systemctl status ssh
 
 # Setup networking pre-requisites
 # In my case, my workers will be on the private network of 10.12.1.0/24
 
+echo "Setting up network ports"
 sudo ufw allow ssh from 10.12.1.10/24
-sudo ufw enable
-sudo ufw status verbose
 sudo ufw allow from 10.12.1.0/24 to any port 6443
 sudo ufw allow from 10.12.1.0/24 to any port 10250
 sudo ufw allow from 10.12.1.0/24 to any port 10259
 sudo ufw allow from 10.12.1.0/24 to any port 10257
 sudo ufw allow from 10.12.1.0/24 to any port 2379
 sudo ufw allow from 10.12.1.0/24 to any port 2380
+sudo ufw enable
+sudo ufw status verbose
 
+echo "Installing containerd"
 # Install containerd
 wget https://github.com/containerd/containerd/releases/download/v2.1.3/containerd-2.1.3-linux-amd64.tar.gz
 sudo tar Cxzvf /usr/local containerd-2.1.3-linux-amd64.tar.gz
@@ -51,12 +53,12 @@ wget https://github.com/containernetworking/plugins/releases/download/v1.7.1/cni
 sudo mkdir -p /opt/cni/bin
 sudo tar Cxzvf /opt/cni/bin cni-plugins-linux-amd64-v1.7.1.tgz
 
-# Prepare for systemd
+# Create the initial default config file
 sudo mkdir -p /etc/containerd
+sudo containerd config default|sudo tee /etc/containerd/config.toml
 
-TARGET_FILE="/etc/crictl.yaml"
-
-# Define the contents
+CRICTL_FILE="/etc/crictl.yaml"
+read -r -d '' CRICTL_CONFIG <<'EOF'
 runtime-endpoint: unix:///run/containerd/containerd.sock
 image-endpoint: unix:///run/containerd/containerd.sock
 timeout: 2
@@ -64,8 +66,20 @@ debug: true
 pull-image-on-create: false
 EOF
 
-# Create or overwrite the file
-echo "Creating $TARGET_FILE ..."
-echo "$CONTENT" > "$TARGET_FILE"
+echo "Creating $CRICTL_FILE..."
+echo "$CRICTL_CONFIG" > "$CRICTL_FILE"
+echo "$CRICTL_FILE has been created."
 
-echo "$TARGET_FILE created successfully."
+# ====== Create /etc/modules-load.d/k8s.conf ======
+MODULES_FILE="/etc/modules-load.d/k8s.conf"
+read -r -d '' MODULES_CONFIG <<'EOF'
+overlay
+br_netfilter
+EOF
+
+echo "Creating $MODULES_FILE..."
+echo "$MODULES_CONFIG" > "$MODULES_FILE"
+echo "$MODULES_FILE has been created."
+
+sudo modprobe overlay
+sudo modprobe br_netfilter

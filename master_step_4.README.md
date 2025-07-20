@@ -1,57 +1,21 @@
-# Execute these steps manually to finish the setup
-
-sudo containerd config default|sudo tee /etc/containerd/config.toml
-
-Add the SystemdCgroup option into
-[plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.runc]
-  ...
-  [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.runc.options]
-    SystemdCgroup = true
-
-sudo systemctl restart containerd
+# Kubeadm (final setup)
+Let's start with installing kubeadm as described below:
+- https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+- https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/
 
 
-============
-Let's start with installing kubeadm: https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
-https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/
-
-
-curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.33/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.33/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
-
-
-sudo apt-get update
-sudo apt-get install -y kubelet kubeadm kubectl
-sudo apt-mark hold kubelet kubeadm kubectl
-
-
-# Show the versions installed (they should all match, in this case 1.33)
-kubeadm version
-kubectl version
-kubelet version
-
-sudo crictl ps
-sudo systemctl enable kubelet
-
-# These steps can happen earlier
-# sudo vim /etc/modules-load.d/k8s.conf
-# And enter the below contents
-overlay
-br_netfilter
-
-sudo modprobe overlay
-sudo modprobe br_netfilter
-
-
-# Ok let's pull the Kubernetes images
-sudo kubeadm config images pull --cri-socket unix:///var/run/containerd/containerd.sock
-
-# Verify that images are showing up
+Verify that images are showing up
+```
 sudo crictl images
+```
 
-# Ready!
+Ready to pull the trigger
+```
 sudo kubeadm init --pod-network-cidr=10.12.1.0/24 --cri-socket unix:///var/run/containerd/containerd.sock --v=5
+```
 
+Output is
+```
 Your Kubernetes control-plane has initialized successfully!
 
 To start using your cluster, you need to run the following as a regular user:
@@ -72,9 +36,17 @@ Then you can join any number of worker nodes by running the following on each as
 
 kubeadm join 10.12.1.12:6443 --token wv5o1n.9ba16igxb5pigkv3 \
 	--discovery-token-ca-cert-hash sha256:24527c68238e7640cd847337f9faf02e84794cd26fac6538748a84be1c22747f
+```
 
+Execute the instructions above (as regular user)
+```
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
 
-# Execute the instructions above (normal user)
+Then
+```
 nikhil@k8smaster:~$ kubectl get nodes
 NAME        STATUS     ROLES           AGE     VERSION
 k8smaster   NotReady   control-plane   2m19s   v1.33.3
@@ -86,8 +58,12 @@ CONTAINER           IMAGE               CREATED             STATE               
 24fde49521dda       a92b4b92a9916       2 minutes ago       Running             kube-apiserver            0                   b318bf8af9f20       kube-apiserver-k8smaster            kube-system
 b3c376de8697b       41376797d5122       2 minutes ago       Running             kube-scheduler            0                   24595ce2dbddb       kube-scheduler-k8smaster            kube-system
 f5fc7862bfb3d       499038711c081       2 minutes ago       Running             etcd                      0                   456b1ec2670c3       etcd-k8smaster                      kube-system
+```
 
+To fix this
+```
 kubectl apply -f https://github.com/antrea-io/antrea/releases/download/v2.4.0/antrea.yml
+```
 
 After this the ssh session closes and cannot be re-established
 However from VNC it shows that the master node is now Ready

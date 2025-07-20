@@ -60,3 +60,10 @@ cgroup2fs
 ```
 
 ```ip a``` will also show you the MAC address, which you can then use to setup a DHCP reservation in the router to assign a static IP address e.g. 10.12.1.12 to this MAC address. Restart both the router and the VM to take effect. Verify by running ```ip a``` again.
+
+To run the ```master_step_1.sh``` file after SSH'ing in:
+```
+wget https://raw.githubusercontent.com/nikhilpatwardhan/Kubernetes_Cluster_24_04/refs/heads/main/master_step_1.sh
+chmod +x master_step_1.sh
+sudo ./master_step_1.sh
+```
