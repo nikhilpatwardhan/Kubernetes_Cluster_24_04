@@ -73,6 +73,4 @@ sudo ufw allow from 10.12.1.0/24 to any port 22
 sudo ufw --force enable
 ```
 
-To shut down the machine run, but remember that on reboot kubernetes will not be on. See ![reboot instructions](./master_step_reboot.README.md)
-
-```sudo shutdown now```
+To shut down the machine run ```sudo shutdown now```, but remember that on reboot kubernetes will not be on. See ![reboot instructions](./master_step_reboot.README.md).
