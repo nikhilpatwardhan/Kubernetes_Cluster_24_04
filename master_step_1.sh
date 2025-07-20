@@ -26,7 +26,7 @@ sudo systemctl status ssh
 # In my case, my workers will be on the private network of 10.12.1.0/24
 
 echo "Setting up network ports"
-sudo ufw allow ssh from 10.12.1.10/24
+sudo ufw allow from 10.12.1.0/24 to any port 22
 sudo ufw allow from 10.12.1.0/24 to any port 6443
 sudo ufw allow from 10.12.1.0/24 to any port 10250
 sudo ufw allow from 10.12.1.0/24 to any port 10259
