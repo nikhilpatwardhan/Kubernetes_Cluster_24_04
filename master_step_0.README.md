@@ -6,8 +6,8 @@ Automate part of the process of setting up a brand new machine as a master node 
 There are lots of installations and configurations to be done.
 It would be nice to have a machine image that can be replicated, but as yet I haven't found a way to do that. That is left for future.
 
-## Platform
-I'm running Truenas Fangtooth on a home server with 2 old Xeon processors and lots or RAM.
+### Environment
+Truenas Fangtooth on a home server with 2 old Xeon processors and lots or RAM.
 
 Create an instance (VM) with Ubuntu Server 24.04 LTS as the starting point.
 
@@ -16,7 +16,7 @@ Create an instance (VM) with Ubuntu Server 24.04 LTS as the starting point.
 
 Download the Ubuntu Server 24.04 LTS Live Server ISO image from the internet and upload it to Truenas as a Volume. When creating a new instance, choose this uploaded volume.
  
-Create the VM with
+### Create the VM
 - 2 CPU
 - 8 GiB RAM
 - 10 GiB Root Disk
@@ -25,6 +25,7 @@ Create the VM with
 
 Once the VM has started, use a VNC viewer (Screen Sharing app on iMac) to login to the machine at vnc://10.12.1.10:5901
 
+### Installation
 From the VNC window:
 - Begin the Ubuntu installation process
   - Choose the minimized option
@@ -32,11 +33,12 @@ From the VNC window:
 - Complete the OS installation and reboot
 - After reboot:
   - first stop the running instance from Truenas
-  - Delete the Ubuntu Server 24.04 LTS volume
+  - Delete the Ubuntu Server 24.04 LTS volume _from this VM only_
   - Unselect Autostart
   - Start the instance and take note of which IP address it has started up at (either by logging in from VNC and running ```ip a``` or from your router)
 - SSH into the machine using that IP address
 
+### Checks
 On logging in to the machine, verify a few things:
 
 1. Verify that swap space is off
