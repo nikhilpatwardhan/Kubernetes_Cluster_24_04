@@ -6,10 +6,16 @@ Automate part of the process of setting up a brand new machine as a master node 
 There are lots of installations and configurations to be done.
 It would be nice to have a machine image that can be replicated, but as yet I haven't found a way to do that. That is left for future.
 
+Overall the steps we are following are those documented in
+- https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+- https://kubernetes.io/docs/setup/production-environment/container-runtimes/
+- https://github.com/containerd/containerd/blob/main/docs/getting-started.md
+- https://github.com/containerd/containerd/releases
+
 ### Environment
 Truenas Fangtooth on a home server with 2 old Xeon processors and lots or RAM.
 
-Create an instance (VM) with Ubuntu Server 24.04 LTS as the starting point.
+Create an instance (VM) with Ubuntu Server 24.04 LTS as the starting point. [https://releases.ubuntu.com/noble/ubuntu-24.04.2-desktop-amd64.iso]
 
 > [!NOTE]
 > A ZVol is not necessary to install the OS.

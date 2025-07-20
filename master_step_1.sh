@@ -5,13 +5,6 @@ if [[ "$EUID" -ne 0 ]] ; then
   exit 1
 fi
 
-
-# Overall the steps we are following are those documented in
-# https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
-# https://kubernetes.io/docs/setup/production-environment/container-runtimes/
-# https://github.com/containerd/containerd/blob/main/docs/getting-started.md
-# https://github.com/containerd/containerd/releases
-
 sudo apt update
 sudo apt install openssh-server net-tools vim ufw -y
 sudo apt install libseccomp2 libseccomp-dev -y
@@ -23,7 +16,7 @@ sudo systemctl enable --now ssh
 sudo systemctl status ssh
 
 # Setup networking pre-requisites
-# In my case, my workers will be on the private network of 10.12.1.0/24
+# In my case, all my machines are on the private network of 10.12.1.0/24
 
 echo "Setting up network ports"
 sudo ufw allow from 10.12.1.0/24 to any port 22
