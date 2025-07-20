@@ -11,6 +11,7 @@ I'm running Truenas Fangtooth on a home server with 2 old Xeon processors and lo
 
 Create an instance (VM) with Ubuntu Server 24.04 LTS as the starting point.
 
+> [!NOTE]
 > A ZVol is not necessary to install the OS.
 
 Download the Ubuntu Server 24.04 LTS Live Server ISO image from the internet and upload it to Truenas as a Volume. When creating a new instance, choose this uploaded volume.
@@ -24,17 +25,21 @@ Create the VM with
 
 Once the VM has started, use a VNC viewer (Screen Sharing app on iMac) to login to the machine at vnc://10.12.1.10:5901
 
-(From the VNC window)
+From the VNC window:
 - Begin the Ubuntu installation process
-- Choose the minimized option
-- Choose the OpenSSH option at the end and import your public ssh key from github.com
+  - Choose the minimized option
+  - Choose the OpenSSH option at the end and import your public ssh key from github.com
 - Complete the OS installation and reboot
-- After reboot, first stop the running instance from Truenas
-- Delete the Ubuntu Server 24.04 LTS volume
-- Unselect Autostart
-- Start the instance and take note of which IP address it has started up at (either by logging in from VNC and running ```ip a``` or from your router)
+- After reboot:
+  - first stop the running instance from Truenas
+  - Delete the Ubuntu Server 24.04 LTS volume
+  - Unselect Autostart
+  - Start the instance and take note of which IP address it has started up at (either by logging in from VNC and running ```ip a``` or from your router)
 - SSH into the machine using that IP address
-- Verify that swap space is off
+
+On logging in to the machine, verify a few things:
+
+1. Verify that swap space is off
 ```
 nikhil@k8smaster:~$ free -m
                total        used        free      shared  buff/cache   available
@@ -42,25 +47,22 @@ Mem:            7929         513        6905           4         826        7416
 Swap:              0           0           0
 ```
 
-Initially, ipv4 forwarding is off
+2. ipv4 forwarding is off (it will be turned on by our script)
 ```
 nikhil@k8smaster:~$ sysctl net.ipv4.ip_forward
 net.ipv4.ip_forward = 0
-nikhil@k8smaster:~$ cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
-> net.ipv4.ip_forward = 1
-> EOF
-net.ipv4.ip_forward = 1
-sudo sysctl --system
 ```
 
-Check which cgroup driver is being used on the system
+3. Verify the cgroup driver used on the system is `cgroup2fs`
 ```
 nikhil@k8smaster:~$ stat -fc %T /sys/fs/cgroup/
 cgroup2fs
 ```
 
+### Assinging a static IP
 ```ip a``` will also show you the MAC address, which you can then use to setup a DHCP reservation in the router to assign a static IP address e.g. 10.12.1.12 to this MAC address. Restart both the router and the VM to take effect. Verify by running ```ip a``` again.
 
+### Next Step
 To run the ```master_step_1.sh``` file after SSH'ing in:
 ```
 wget https://raw.githubusercontent.com/nikhilpatwardhan/Kubernetes_Cluster_24_04/refs/heads/main/master_step_1.sh

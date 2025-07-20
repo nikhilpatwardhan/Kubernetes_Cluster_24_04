@@ -36,6 +36,16 @@ sudo ufw allow from 10.12.1.0/24 to any port 2380
 sudo ufw enable
 sudo ufw status verbose
 
+IP_FWD_FILE="/etc/sysctl.d/k8s.conf"
+read -r -d '' IP_FWD_CONFIG <<'EOF'
+net.ipv4.ip_forward = 1
+EOF
+
+echo "Creating $IP_FWD_FILE..."
+echo "$IP_FWD_CONFIG" > "$IP_FWD_FILE"
+echo "$IP_FWD_FILE has been created."
+sudo sysctl --system
+
 echo "Installing containerd"
 # Install containerd
 wget https://github.com/containerd/containerd/releases/download/v2.1.3/containerd-2.1.3-linux-amd64.tar.gz
