@@ -1,7 +1,8 @@
 # Create a master node in a Kubernetes cluster
 
 ## Goal
-Automate part of the process of setting up a brand new machine as a master node in a k8s cluster.
+- To run a small Kubernetes cluster with just one master node and a handful or worker nodes, and do it all on virtual machines.
+- Automate parts of the process of setting up a brand new virtual machine.
 
 There are lots of installations and configurations to be done.
 It would be nice to have a machine image that can be replicated, but as yet I haven't found a way to do that. That is left for future.

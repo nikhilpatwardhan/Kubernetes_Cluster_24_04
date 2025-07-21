@@ -5,7 +5,7 @@ if [[ "$EUID" -ne 0 ]] ; then
   exit 1
 fi
 
-sudo apt install openssh-server net-tools vim ufw -y
+sudo apt install openssh-server net-tools iputils-ping vim ufw -y
 sudo apt install libseccomp2 libseccomp-dev -y
 sudo apt-get install -y apt-transport-https ca-certificates curl gpg
 sudo apt install -y systemd-timesyncd
@@ -25,6 +25,7 @@ sudo ufw allow from 10.12.1.0/24 to any port 10259
 sudo ufw allow from 10.12.1.0/24 to any port 10257
 sudo ufw allow from 10.12.1.0/24 to any port 2379
 sudo ufw allow from 10.12.1.0/24 to any port 2380
+sudo ufw logging high
 sudo ufw --force enable
 sudo ufw status verbose
 

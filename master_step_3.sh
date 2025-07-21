@@ -12,5 +12,3 @@ sudo apt-get update
 sudo apt install -y kubelet=1.33.3-1.1 kubeadm=1.33.3-1.1 kubectl=1.33.3-1.1
 sudo apt-mark hold kubelet kubeadm kubectl
 sudo systemctl enable kubelet
-
-sudo kubeadm config images pull --cri-socket unix:///var/run/containerd/containerd.sock

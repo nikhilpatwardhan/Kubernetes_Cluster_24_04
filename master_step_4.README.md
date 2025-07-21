@@ -11,6 +11,8 @@ sudo crictl images
 
 Ready to pull the trigger
 ```
+sudo kubeadm config images pull --cri-socket unix:///var/run/containerd/containerd.sock
+
 sudo kubeadm init --pod-network-cidr=10.12.1.0/24 --cri-socket unix:///var/run/containerd/containerd.sock --v=5
 ```
 
@@ -60,7 +62,7 @@ b3c376de8697b       41376797d5122       2 minutes ago       Running             
 f5fc7862bfb3d       499038711c081       2 minutes ago       Running             etcd                      0                   456b1ec2670c3       etcd-k8smaster                      kube-system
 ```
 
-To fix this
+TODO: This is not fully correct. Although it makes the master node Ready, it also hijacks 10.12.1.1 which is the IP address of the internet gateway.
 ```
 kubectl apply -f https://github.com/antrea-io/antrea/releases/download/v2.4.0/antrea.yml
 ```
