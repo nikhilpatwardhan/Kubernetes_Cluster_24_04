@@ -3,13 +3,31 @@
 ### Pre-requisite
 The initial setup is identical to that of setting up a master node. Follow all the steps upto ![installing kubelet](./master_step_3.sh).
 
+Workers can be created with different specs.
+
+I've created two workers with these specs
+- 1 CPU
+- 4 GiB RAM
+- 10 GiB Root Disk
+
 ### Join the cluster
 When the master node is initialized, it would have generated a token and a hash. You will need that along with the IP address of the master node.
 
 Just make sure that kubelet is running (if the worker was restarted). Post-restart steps are identical to ![restarting the master](./master_step_reboot.README.md).
 
 ```
-kubeadm join 10.12.1.12:6443 --token cwgrzd.kxkeotbdw27wjcht --discovery-token-ca-cert-hash sha256:242584fa517a6788289e6703f829189d377c9444c44a7ee63de66e8d8bda1881 --v=5
+sudo systemctl restart kubelet
+```
+
+I don't know if this is needed, but for now just apply it
+
+```
+kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+```
+
+Finally,
+```
+sudo kubeadm join 10.12.1.12:6443 --token cwgrzd.kxkeotbdw27wjcht --discovery-token-ca-cert-hash sha256:242584fa517a6788289e6703f829189d377c9444c44a7ee63de66e8d8bda1881 --v=5
 ```
 
 Once it has joined successfully you will see it on the master node

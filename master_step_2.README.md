@@ -4,7 +4,7 @@ Execute these steps manually
 sudo vim /etc/containerd/config.toml
 ```
 
-Open the default config file /etc/containerd/config.toml as sudo in vim and then add the SystemdCgroup option into this section
+Open the default config file `/etc/containerd/config.toml` as `sudo` in `vim` and then add the `SystemdCgroup` option into the section shown below.
 ```
 [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.runc]
   ...

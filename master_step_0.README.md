@@ -1,23 +1,7 @@
 # Create a master node in a Kubernetes cluster
-
-## Goal
-- To run a small Kubernetes cluster with just one master node and a handful or worker nodes, and do it all on virtual machines running on a home server.
-- Partially automate the process of setting up a brand new virtual machine to be used as a master or worker node.
-
-There are a bunch of installations and configurations to be done.
-It would be nice to have a machine image that can be replicated, but as yet I haven't found a convenient way to do that. That is left for future.
-
-Overall the steps we are following are those documented in
-- https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
-- https://kubernetes.io/docs/setup/production-environment/container-runtimes/
-- https://github.com/containerd/containerd/blob/main/docs/getting-started.md
-- https://github.com/containerd/containerd/releases
-
-### Environment
-Truenas Fangtooth on a home server with dual E5-2620 6-core Xeon processors and around 300 GB of DDR3 RAM.
  
 ### Create the VM (i.e. instance)
-Create an instance (VM) with Ubuntu Server 24.04 LTS as the starting point. [https://releases.ubuntu.com/noble/ubuntu-24.04.2-desktop-amd64.iso]
+Create an instance (VM) with Ubuntu Server 24.04 LTS as the starting image using the Truenas GUI in the Instances section. [https://releases.ubuntu.com/noble/ubuntu-24.04.2-desktop-amd64.iso]
 
 > [!NOTE]
 > A ZVol is not necessary to install the OS. Just install it into the Root disk.
@@ -70,12 +54,12 @@ cgroup2fs
 ```
 
 ### Assign a hostname
-For convenience, set a hostname on the machine:
+For convenience, set a hostname on the machine (e.g. `master1.local` for the master node, `worker1.local` for the first worker, and so on):
 ```
 sudo hostnamectl set-hostname master1.local
 ```
 
-### Assinging a static IP
+### Assign a static IP
 ```ip a``` will also show you the MAC address of this host, which you can then use to setup a DHCP reservation in the router to assign a static IP address.
 
 Here, we are going to assign the following static IPs
