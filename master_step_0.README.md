@@ -69,13 +69,13 @@ nikhil@k8smaster:~$ stat -fc %T /sys/fs/cgroup/
 cgroup2fs
 ```
 
-#### Assign a hostname
+### Assign a hostname
 For convenience, set a hostname on the machine:
 ```
 sudo hostnamectl set-hostname master1.local
 ```
 
-#### Assinging a static IP
+### Assinging a static IP
 ```ip a``` will also show you the MAC address of this host, which you can then use to setup a DHCP reservation in the router to assign a static IP address.
 
 Here, we are going to assign the following static IPs
