@@ -1,11 +1,11 @@
 # Create a master node in a Kubernetes cluster
 
 ## Goal
-- To run a small Kubernetes cluster with just one master node and a handful or worker nodes, and do it all on virtual machines.
-- Automate parts of the process of setting up a brand new virtual machine.
+- To run a small Kubernetes cluster with just one master node and a handful or worker nodes, and do it all on virtual machines running on a home server.
+- Partially automate the process of setting up a brand new virtual machine to be used as a master or worker node.
 
-There are lots of installations and configurations to be done.
-It would be nice to have a machine image that can be replicated, but as yet I haven't found a way to do that. That is left for future.
+There are a bunch of installations and configurations to be done.
+It would be nice to have a machine image that can be replicated, but as yet I haven't found a convenient way to do that. That is left for future.
 
 Overall the steps we are following are those documented in
 - https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
@@ -14,23 +14,24 @@ Overall the steps we are following are those documented in
 - https://github.com/containerd/containerd/releases
 
 ### Environment
-Truenas Fangtooth on a home server with 2 old Xeon processors and lots or RAM.
-
+Truenas Fangtooth on a home server with dual E5-2620 6-core Xeon processors and around 300 GB of DDR3 RAM.
+ 
+### Create the VM (i.e. instance)
 Create an instance (VM) with Ubuntu Server 24.04 LTS as the starting point. [https://releases.ubuntu.com/noble/ubuntu-24.04.2-desktop-amd64.iso]
 
 > [!NOTE]
-> A ZVol is not necessary to install the OS.
+> A ZVol is not necessary to install the OS. Just install it into the Root disk.
 
 Download the Ubuntu Server 24.04 LTS Live Server ISO image from the internet and upload it to Truenas as a Volume. When creating a new instance, choose this uploaded volume.
- 
-### Create the VM (i.e. instance)
+
+For this setup, I have chosen a modest spec for each machine in the New Instance creation GUI in Truenas as follows:
 - 2 CPU
 - 8 GiB RAM
 - 10 GiB Root Disk
 - Select the appropriate NIC
-- Setup a VNC port of 5901 (so that it does not clash with 5900 already in use)
+- Setup a VNC port of 5901 (or some other port so that it does not clash with 5900 already in use)
 
-Once the VM has started, use a VNC viewer (Screen Sharing app on iMac) to login to the machine at vnc://10.12.1.10:5901
+Once the VM has started, use a VNC viewer (Screen Sharing app on iMac) to login to the machine at `vnc://10.12.1.10:5901`. Note that this is the IP address of truenas.
 
 ### Installation
 From the VNC window:
@@ -68,15 +69,27 @@ nikhil@k8smaster:~$ stat -fc %T /sys/fs/cgroup/
 cgroup2fs
 ```
 
-### Upgrade
-On the fresh system, run the below two commands and then reboot. These can be run from VNC or SSH.
+#### Assign a hostname
+For convenience, set a hostname on the machine:
 ```
-sudo apt update && sudo apt upgrade -y
-sudo reboot now
+sudo hostnamectl set-hostname master1.local
 ```
 
-### Assinging a static IP
-```ip a``` will also show you the MAC address, which you can then use to setup a DHCP reservation in the router to assign a static IP address e.g. 10.12.1.12 to this MAC address. Restart both the router and the VM to take effect. Verify by running ```ip a``` again.
+#### Assinging a static IP
+```ip a``` will also show you the MAC address of this host, which you can then use to setup a DHCP reservation in the router to assign a static IP address.
+
+Here, we are going to assign the following static IPs
+##### Master
+`10.12.1.12`
+##### Worker1
+`10.12.1.13`
+##### Worker2
+`10.12.1.14`
+
+Reboot the VM, and also reboot the router.
+```
+sudo reboot now
+```
 
 ### Next Step
 To run the ```master_step_1.sh``` file after SSH'ing in:

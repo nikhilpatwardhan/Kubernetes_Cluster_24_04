@@ -4,16 +4,15 @@ Let's start with installing kubeadm as described below:
 - https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/
 
 
-Verify that images are showing up
+Download the images and verify
 ```
+sudo kubeadm config images pull --cri-socket unix:///var/run/containerd/containerd.sock
 sudo crictl images
 ```
 
 Ready to pull the trigger
 ```
-sudo kubeadm config images pull --cri-socket unix:///var/run/containerd/containerd.sock
-
-sudo kubeadm init --pod-network-cidr=10.12.1.0/24 --cri-socket unix:///var/run/containerd/containerd.sock --v=5
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --cri-socket unix:///var/run/containerd/containerd.sock --v=5
 ```
 
 Output is
@@ -36,9 +35,12 @@ Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
 
 Then you can join any number of worker nodes by running the following on each as root:
 
-kubeadm join 10.12.1.12:6443 --token wv5o1n.9ba16igxb5pigkv3 \
-	--discovery-token-ca-cert-hash sha256:24527c68238e7640cd847337f9faf02e84794cd26fac6538748a84be1c22747f
+kubeadm join 10.12.1.12:6443 --token cwgrzd.kxkeotbdw27wjcht \
+	--discovery-token-ca-cert-hash sha256:242584fa517a6788289e6703f829189d377c9444c44a7ee63de66e8d8bda1881
 ```
+
+> [!NOTE]
+> Save this token and the hash. But if you don't there is a way to discover them later too.
 
 Execute the instructions above (as regular user)
 ```
@@ -52,19 +54,12 @@ Then
 nikhil@k8smaster:~$ kubectl get nodes
 NAME        STATUS     ROLES           AGE     VERSION
 k8smaster   NotReady   control-plane   2m19s   v1.33.3
-
-nikhil@k8smaster:~$ sudo crictl ps
-CONTAINER           IMAGE               CREATED             STATE               NAME                      ATTEMPT             POD ID              POD                                 NAMESPACE
-7fcebd04735fb       af855adae7960       2 minutes ago       Running             kube-proxy                0                   3d42892e99a61       kube-proxy-7w4ht                    kube-system
-0e629fc0e965d       bf97fadcef430       2 minutes ago       Running             kube-controller-manager   0                   f95d12f6767f3       kube-controller-manager-k8smaster   kube-system
-24fde49521dda       a92b4b92a9916       2 minutes ago       Running             kube-apiserver            0                   b318bf8af9f20       kube-apiserver-k8smaster            kube-system
-b3c376de8697b       41376797d5122       2 minutes ago       Running             kube-scheduler            0                   24595ce2dbddb       kube-scheduler-k8smaster            kube-system
-f5fc7862bfb3d       499038711c081       2 minutes ago       Running             etcd                      0                   456b1ec2670c3       etcd-k8smaster                      kube-system
 ```
 
-TODO: This is not fully correct. Although it makes the master node Ready, it also hijacks 10.12.1.1 which is the IP address of the internet gateway.
+To fix this, run the below.
+Do not use sudo for the command below.
 ```
-kubectl apply -f https://github.com/antrea-io/antrea/releases/download/v2.4.0/antrea.yml
+kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 ```
 
 ### Next Step

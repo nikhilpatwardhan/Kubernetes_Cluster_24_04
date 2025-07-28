@@ -5,7 +5,9 @@ if [[ "$EUID" -ne 0 ]] ; then
   exit 1
 fi
 
-sudo apt install openssh-server net-tools iputils-ping vim ufw -y
+sudo apt update
+sudo apt upgrade -y
+sudo apt install openssh-server net-tools iputils-ping vim ufw less -y
 sudo apt install libseccomp2 libseccomp-dev -y
 sudo apt-get install -y apt-transport-https ca-certificates curl gpg
 sudo apt install -y systemd-timesyncd
@@ -32,6 +34,8 @@ sudo ufw status verbose
 IP_FWD_FILE="/etc/sysctl.d/k8s.conf"
 read -r -d '' IP_FWD_CONFIG <<'EOF'
 net.ipv4.ip_forward = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
 EOF
 
 echo "Creating $IP_FWD_FILE..."
