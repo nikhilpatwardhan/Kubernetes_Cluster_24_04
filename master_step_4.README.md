@@ -65,4 +65,6 @@ kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/
 ### Next Step
 The cluster should now be ready to use. You can run queries, or add worker nodes, etc. Do Kubernetes stuff basically. Enjoy.
 
-To shut down the machine run ```sudo shutdown now```, but remember that on reboot kubernetes will not be on. See ![reboot instructions](./master_step_reboot.README.md).
+To shut down the machine run ```sudo shutdown now```, but remember that on reboot kubernetes will not be on. See the ![reboot script](./master_step_reboot.README.md).
+
+```wget https://raw.githubusercontent.com/nikhilpatwardhan/Kubernetes_Cluster_24_04/refs/heads/main/reboot.sh```
