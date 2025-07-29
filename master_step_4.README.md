@@ -67,4 +67,8 @@ The cluster should now be ready to use. You can run queries, or add worker nodes
 
 To shut down the machine run ```sudo shutdown now```, but remember that on reboot kubernetes will not be on. See the ![reboot script](./master_step_reboot.README.md).
 
-```wget https://raw.githubusercontent.com/nikhilpatwardhan/Kubernetes_Cluster_24_04/refs/heads/main/reboot.sh```
+```
+wget --no-cache https://raw.githubusercontent.com/nikhilpatwardhan/Kubernetes_Cluster_24_04/refs/heads/main/reboot.sh
+chmod +x reboot.sh
+sudo ./reboot.sh
+```

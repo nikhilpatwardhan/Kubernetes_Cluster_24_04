@@ -19,7 +19,7 @@ sudo systemctl restart containerd
 
 ### Next Step
 ```
-wget https://raw.githubusercontent.com/nikhilpatwardhan/Kubernetes_Cluster_24_04/refs/heads/main/master_step_3.sh
+wget --no-cache https://raw.githubusercontent.com/nikhilpatwardhan/Kubernetes_Cluster_24_04/refs/heads/main/master_step_3.sh
 chmod +x master_step_3.sh
 sudo ./master_step_3.sh
 ```

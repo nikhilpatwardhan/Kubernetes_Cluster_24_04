@@ -76,7 +76,7 @@ sudo reboot now
 ### Next Step
 To run the ```master_step_1.sh``` file after SSH'ing in:
 ```
-wget https://raw.githubusercontent.com/nikhilpatwardhan/Kubernetes_Cluster_24_04/refs/heads/main/master_step_1.sh
+wget --no-cache https://raw.githubusercontent.com/nikhilpatwardhan/Kubernetes_Cluster_24_04/refs/heads/main/master_step_1.sh
 chmod +x master_step_1.sh
 sudo ./master_step_1.sh
 ```
