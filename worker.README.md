@@ -3,10 +3,8 @@
 ### Pre-requisite
 The initial setup is identical to that of setting up a master node. Follow all the steps upto ![installing kubelet](./master_step_3.sh).
 
-Workers can be created with different specs.
-
-I've created two workers with these specs
-- 1 CPU
+I've created two worker nodes with these specs
+- 2 CPU
 - 4 GiB RAM
 - 10 GiB Root Disk
 

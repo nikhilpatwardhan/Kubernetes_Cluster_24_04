@@ -1,7 +1,7 @@
 # Create a master node in a Kubernetes cluster
  
 ### Create the VM (i.e. instance)
-Create an instance (VM) with Ubuntu Server 24.04 LTS as the starting image using the Truenas GUI in the Instances section. [https://releases.ubuntu.com/noble/ubuntu-24.04.2-desktop-amd64.iso]
+Create an instance with Ubuntu Server 24.04 LTS as the starting image using the Truenas GUI in the Instances section. [https://releases.ubuntu.com/noble/ubuntu-24.04.2-desktop-amd64.iso]
 
 > [!NOTE]
 > A ZVol is not necessary to install the OS. Just install it into the Root disk.
@@ -13,22 +13,23 @@ For this setup, I have chosen a modest spec for each machine in the New Instance
 - 8 GiB RAM
 - 10 GiB Root Disk
 - Select the appropriate NIC
-- Setup a VNC port of 5901 (or some other port so that it does not clash with 5900 already in use)
+- Setup a VNC port of 5901 (or some other port so that it does not clash with a port already in use)
 
-Once the VM has started, use a VNC viewer (Screen Sharing app on iMac) to login to the machine at `vnc://10.12.1.10:5901`. Note that this is the IP address of truenas.
+Once the VM has started, use a VNC viewer (Screen Sharing app on iMac) to login to the machine at `vnc://10.12.1.10:5901`. Note that this is the IP address of truenas. Use a different VNC port for each instance.
 
 ### Installation
-From the VNC window:
+Start a VNC connection to the running instance that was just created. Ubuntu Server will begin to boot from the `ubuntu-24.04.2-desktop-amd64.iso` volume.
 - Begin the Ubuntu installation process
-  - Choose the minimized option
+  - Choose the minimized server option
   - Choose the OpenSSH option at the end and import your public ssh key from github.com
+  - I created a user called `nikhil`
 - Complete the OS installation and reboot
 - After reboot:
   - Stop the running instance from Truenas
   - Delete the Ubuntu Server 24.04 LTS **disk** _from this instance only_ ![](assets/delete_disk.png)
   - Unselect Autostart
   - Start the instance and take note of which IP address it has started up at (either by logging in from VNC and running ```ip a``` or from your router)
-  - SSH into the machine using that IP address
+  - SSH into the machine using that IP address. The VNC connection can be closed.
 
 ### Checks
 On logging in to the machine, verify a few things:
@@ -62,13 +63,10 @@ sudo hostnamectl set-hostname master1.local
 ### Assign a static IP
 ```ip a``` will also show you the MAC address of this host, which you can then use to setup a DHCP reservation in the router to assign a static IP address.
 
-Here, we are going to assign the following static IPs
-##### Master
-`10.12.1.12`
-##### Worker1
-`10.12.1.13`
-##### Worker2
-`10.12.1.14`
+Assign the following static IPs
+- Master `10.12.1.12`
+- Worker1 `10.12.1.13`
+- Worker2 `10.12.1.14`
 
 Reboot the VM, and also reboot the router.
 ```
